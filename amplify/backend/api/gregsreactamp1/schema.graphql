@@ -1,0 +1,36 @@
+type Car @model {
+  id: ID!
+  title: String!
+  description: String!
+  make: String!
+  model: String!
+  price: Number!
+  #posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+}
+
+type House @model 
+#@key(name: "byBlog", fields: ["blogID"])
+{
+  id: ID!
+  title: String!
+  description: String!
+  year: Number!
+  style: String!
+  price: Number!
+  #blogID: ID!
+  #blog: Blog @connection(fields: ["blogID"])
+  #comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+}
+
+type Job @model 
+#@key(name: "byPost", fields: ["postID", "content"]) 
+{
+  id: ID!
+  title: String!
+  description: String!
+  hours: Number!
+  wage: Number!
+  #postID: ID!
+  #post: Post @connection(fields: ["postID"])
+  #content: String!
+}
