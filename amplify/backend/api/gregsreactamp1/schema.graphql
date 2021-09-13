@@ -1,10 +1,11 @@
 type Car @model {
   id: ID!
+  user: String!
   title: String!
   description: String!
   make: String!
   model: String!
-  price: Number!
+  price: Int!
   #posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
 }
 
@@ -12,11 +13,14 @@ type House @model
 #@key(name: "byBlog", fields: ["blogID"])
 {
   id: ID!
+  user: String!
   title: String!
   description: String!
-  year: Number!
+  year: Int!
   style: String!
-  price: Number!
+  bed: Int!
+  bath: Int!
+  price: Int!
   #blogID: ID!
   #blog: Blog @connection(fields: ["blogID"])
   #comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
@@ -26,10 +30,11 @@ type Job @model
 #@key(name: "byPost", fields: ["postID", "content"]) 
 {
   id: ID!
+  user: String!
   title: String!
   description: String!
-  hours: Number!
-  wage: Number!
+  hours: Int!
+  wage: Int!
   #postID: ID!
   #post: Post @connection(fields: ["postID"])
   #content: String!
