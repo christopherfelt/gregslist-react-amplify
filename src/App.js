@@ -1,21 +1,34 @@
-import {Navbar, Container, Nav, NavDropdown} from "react-bootstrap"
+import {Container, Row, Col} from "react-bootstrap"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import "bootstrap/dist/css/bootstrap.css";
+import NavBar from "./components/NavBar";
+import Cars from './components/Cars'
 
+import "bootstrap/dist/css/bootstrap.css";
 import './App.css';
-import Main from './components/Main'
 
 function App() {
   return (
-    <div className="background"> 
-      <Navbar className="navbar" expand="lg" >
-        <Container fluid>
-          <h1 className="brand">Gregslist</h1>
-        </Container>
-      </Navbar>
-      <Main />
-    </div>
+    <Router>
+      <NavBar />
+      <Container>
+        <Row>
+          <Col className="d-flex justify-content-center">
+            <div className="p-3">
+              <Link to="/cars"><span className="mx-2">Cars</span></Link>  
+              <Link to="/houses"><span className="mx-2">Houses</span></Link>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      <Switch>
+        <Route path="/cars" exact component={Cars} />
+        {/* <Route path="/boards" exact component={Boards} /> */}
+        {/* <Route path="/boarddetail/:boardId" component={BoardDetail} /> */}
+
+      </Switch>
+    </Router>
+
 
   );
 }
