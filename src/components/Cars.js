@@ -1,28 +1,29 @@
-import React from 'react'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import React from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import ItemCard from "./ItemCard"
+import ItemCard from "./ItemCard";
 
 export default function Cars() {
+  const carData = [
+    { id: 1, user: "me", title: "car one", description: "This is the first car", make: "Ford", model: "Taurus", price: 1934 },
+    { id: 2, user: "me", title: "car two", description: "This is another car", make: "Chevy", model: "Prius", price: 2345 },
+  ];
 
-
-    const carData = [
-        {user: "me", make: "Ford", model: "Taurus", price: 1934, },
-        {user: "me", make: "Chevy", model: "Prius", price: 2345, }
-    ]
-
-    return (
-        <Container fluid>
-            <Row>
-                <Col className="d-flex justify-content-center">
-                    {
-                        carData.map((car) => (
-                            <ItemCard itemData={car} />
-                        ))
-                    }
-
-                </Col>
-            </Row>
-        </Container>
-    )
-};
+  return (
+    <Container fluid>
+        <Row>
+            <Col className="d-flex justify-content-center">
+                <Button as={Link} to="/new-car">Add Car</Button>
+            </Col>
+        </Row>
+      <Row>
+        <Col className="d-flex justify-content-center">
+          {carData.map((car) => (
+            <ItemCard itemData={car} />
+          ))}
+        </Col>
+      </Row>
+    </Container>
+  );
+}

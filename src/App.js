@@ -6,6 +6,7 @@ import Cars from './components/Cars'
 
 import "bootstrap/dist/css/bootstrap.css";
 import './App.css';
+import NewCar from "./components/NewCar";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       </Container>
       <Switch>
         <Route path="/cars" exact component={Cars} />
+        <Route path="/new-car" exact component={NewCar} />
         {/* <Route path="/boards" exact component={Boards} /> */}
         {/* <Route path="/boarddetail/:boardId" component={BoardDetail} /> */}
 

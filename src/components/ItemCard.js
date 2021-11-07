@@ -11,6 +11,14 @@ export default function ItemCard({itemData}) {
             {itemData.description}
         </Card.Text>
         {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" }
+        {itemData.make ? (<Card.Text>Make: {itemData.make} </Card.Text>) : "" }
+        {itemData.price ? (<Card.Text>Price: {itemData.price} </Card.Text>) : "" }
+        {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
+        {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
+        {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
+        {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
+        {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
+
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
     </Card>
