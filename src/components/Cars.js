@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import ItemCard from "./ItemCard";
@@ -20,7 +20,7 @@ export default function Cars() {
       <Row>
         <Col className="d-flex justify-content-center">
           {carData.map((car) => (
-            <ItemCard itemData={car} />
+            <ItemCard itemData={car} key={car.id} />
           ))}
         </Col>
       </Row>
