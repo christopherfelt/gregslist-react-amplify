@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
-
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import { createCar } from "../graphql/mutations";
 
 export default function NewCar() {
 
@@ -10,9 +11,15 @@ export default function NewCar() {
     setAllValues({ ...allValues, [e.target.name]: e.target.value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(allValues);
+
+    const input = {
+       ...allValues,
+       user: "me",
+    }
+
+    await API.graphql(graphqlOperation(createCar, { input }));
   }
 
   return (
