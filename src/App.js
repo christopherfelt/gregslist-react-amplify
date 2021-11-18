@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
 import Cars from "./components/Cars";
+import UserAuthComp from "./components/UserAuth";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
@@ -26,6 +27,9 @@ function App() {
                 <Link to="/houses">
                   <span className="mx-2">Houses</span>
                 </Link>
+                <Link to="/user-auth">
+                  <span className="mx-2">Sign In / Sign Up</span>
+                </Link>
               </div>
             </Col>
           </Row>
@@ -33,6 +37,7 @@ function App() {
         <Switch>
           <Route path="/cars" exact component={Cars} />
           <Route path="/new-car" exact component={NewCar} />
+          <Route path="/user-auth" exact component={UserAuthComp} />
           {/* <Route path="/boards" exact component={Boards} /> */}
           {/* <Route path="/boarddetail/:boardId" component={BoardDetail} /> */}
         </Switch>

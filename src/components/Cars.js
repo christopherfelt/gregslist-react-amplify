@@ -1,29 +1,33 @@
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import {listCars} from "../graphql/queries"
+// import {listCars} from "../graphql/queries"
+import {CarContext} from "../context/CarState";
 
 import ItemCard from "./ItemCard";
 
 export default function Cars() {
 
-  const [carData, setCarData] = useState([]);
+  // const [carData, setCarData] = useState([]);
+
+  const {cars, getCars} = useContext(CarContext);
 
   useEffect(() => {
-    fetchCars()
+    // fetchCars()
+    getCars();
   }, [])
 
-  const fetchCars = async() => {
-    try {
-      const data = await API.graphql(graphqlOperation(listCars))
-      const items = data.data.listCars.items
-      setCarData(items);
-    } catch (error) {
-      console.log('error fetching cars')
-    }
-  }
+  // const fetchCars = async() => {
+  //   try {
+  //     const data = await API.graphql(graphqlOperation(listCars))
+  //     const items = data.data.listCars.items
+  //     setCarData(items);
+  //   } catch (error) {
+  //     console.log('error fetching cars')
+  //   }
+  // }
 
 
   // const carData = [
@@ -40,7 +44,7 @@ export default function Cars() {
         </Row>
       <Row>
         <Col className="d-flex justify-content-center">
-          {carData.map((car) => (
+          {cars.map((car) => (
             <ItemCard itemData={car} key={car.id} />
           ))}
         </Col>
