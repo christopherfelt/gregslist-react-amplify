@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import { API, Auth, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import {listCars} from "../graphql/queries";
 
 import CarReducer from "./CarReducer";

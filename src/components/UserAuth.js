@@ -69,6 +69,14 @@ export default function UserAuth() {
     }
   }
 
+  async function signOut(){
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
     if (radioValue === 1) {
@@ -86,11 +94,19 @@ export default function UserAuth() {
     confirmSignUp();
   };
 
+  const signOutHandler = (e) => {
+    e.preventDefault();
+    signOut();
+  }
+
   return (
     <Container>
       <Row>
         <Col className="d-flex justify-content-center">
-          <Card style={{ width: "18rem", height: "18rem" }} className="d-flex justify-content-center align-items-center">
+          <Card
+            style={{ width: "18rem", height: "18rem" }}
+            className="d-flex justify-content-center align-items-center"
+          >
             <Card.Body>
               <ButtonGroup className="mb-2">
                 {radios.map((radio, idx) => (
@@ -135,25 +151,33 @@ export default function UserAuth() {
           </Card>
         </Col>
       </Row>
+      {signUpSuccess && (
+        <Row>
+          <Col className="d-flex justify-content-center">
+            <Card
+              style={{ width: "18rem", height: "18rem" }}
+              className="d-flex justify-content-center align-items-center"
+            >
+              <Form onSubmit={confirmationHandler}>
+                <Form.Group>
+                  <Form.Control
+                    type="text"
+                    name="confirmation"
+                    placeholder="Confirmation Number"
+                    onChange={changeHandler}
+                  />
+                  <Button type="submit" variant="primary">
+                    Submit
+                  </Button>
+                </Form.Group>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      )}
       <Row>
-        <Col className="d-flex justify-content-center">
-          <Card style={{ width: "18rem", height: "18rem" }} className="d-flex justify-content-center align-items-center">
-            {/* {signUpSuccess &&  */}
-            <Form onSubmit={confirmationHandler}>
-              <Form.Group>
-                <Form.Control
-                  type="text"
-                  name="confirmation"
-                  placeholder="Confirmation Number"
-                  onChange={changeHandler}
-                />
-                <Button type="submit" variant="primary">
-                  Submit
-                </Button>
-              </Form.Group>
-            </Form>
-            {/* } */}
-          </Card>
+        <Col>
+          <Button type="button" variant="danger" onClick={signOutHandler} >Sign Out</Button>
         </Col>
       </Row>
     </Container>
