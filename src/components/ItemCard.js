@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Button } from 'react-bootstrap'
+import { Link } from "react-router-dom";
 
 export default function ItemCard({itemData}) {
   return (
@@ -19,7 +20,7 @@ export default function ItemCard({itemData}) {
         {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
         {/* {itemData.model ? (<Card.Text>Model: {itemData.model} </Card.Text>) : "" } */}
 
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary" as={Link} to={"/car/"+itemData.id} >Go to car</Button>
       </Card.Body>
     </Card>
   );

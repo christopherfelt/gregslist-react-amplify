@@ -39,7 +39,7 @@ export const CarProvider = ({ children }) => {
                 car: state.car,
                 cars: state.cars,
                 error: state.error,
-                loading: state.loading,
+                loadingAllCars: state.loadingAllCars,
                 getCars
             }}
         >

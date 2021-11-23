@@ -4,18 +4,18 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Cars from "./components/Cars";
 import UserAuthComp from "./components/UserAuth";
+import NewCar from "./components/NewCar";
+import Car from "./components/Car";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
-
-import NewCar from "./components/NewCar";
 
 import { CarProvider } from "./context/CarState";
 
 function App() {
   return (
-    <Router>
-      <CarProvider>
+    <CarProvider>
+      <Router>
         <NavBar />
         <Container>
           <Row>
@@ -38,11 +38,12 @@ function App() {
           <Route path="/cars" exact component={Cars} />
           <Route path="/new-car" exact component={NewCar} />
           <Route path="/user-auth" exact component={UserAuthComp} />
+          <Route path="/car/:carId" exact component={Car} />
           {/* <Route path="/boards" exact component={Boards} /> */}
           {/* <Route path="/boarddetail/:boardId" component={BoardDetail} /> */}
         </Switch>
-      </CarProvider>
-    </Router>
+      </Router>
+    </CarProvider>
   );
 }
 
