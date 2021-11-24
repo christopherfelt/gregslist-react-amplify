@@ -37,7 +37,7 @@ export default function Cars() {
 
   const onClickHandler = async (e) => {
     e.preventDefault();
-    console.log(cars);
+    console.log(cars[0]);
   }
 
   return (
