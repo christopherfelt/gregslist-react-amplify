@@ -1,6 +1,8 @@
 import React, { createContext, useReducer } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import {listCars} from "../graphql/queries";
+import { createCar } from "../graphql/mutations";
+
 
 import CarReducer from "./CarReducer";
 
@@ -30,6 +32,15 @@ export const CarProvider = ({ children }) => {
                 type: "CAR_ERROR",
                 paylaod: error
             })
+        }
+    }
+
+    async function createCar({input}){
+        try {
+            const data = await API.graphql(graphqlOperation(createCar, {input}))
+            console.log(data);
+        } catch (error) {
+            
         }
     }
     

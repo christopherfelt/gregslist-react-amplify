@@ -19,7 +19,8 @@ export default function Car({
 }) {
   const { cars, getCars } = useContext(CarContext);
 
-  const [car, setCar] = useState({ title: "", description: "" });
+  const [car, setCar] = useState({ title: "", description: "", make:"",
+                                  model:"", price:"" });
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function Car({
                 <ListGroupItem>{car.price}</ListGroupItem>
               </ListGroup>
               <Button variant="primary" className="mt-2" onClick={onClickHandler}>
-                Get Cars
+                Bid
               </Button>
             </Card.Body>
           </Card>
