@@ -44,23 +44,16 @@ export default function Cars() {
     <Container fluid>
       <Row>
         <Col className="d-flex justify-content-center">
-          <Button as={Link} to="/new-car">
-            Add Car
-          </Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col className="d-flex justify-content-center">
           {cars.map((car) => (
             <ItemCard itemData={car} key={car.id} />
           ))}
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col>
         <Button variant="primary" onClick={onClickHandler}>Get Cars</Button>
         </Col>
-      </Row>
+      </Row> */}
     </Container>
   );
 }

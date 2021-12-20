@@ -35,12 +35,12 @@ export const CarProvider = ({ children }) => {
         }
     }
 
-    async function createCar({input}){
+    async function postCar(input){
         try {
-            const data = await API.graphql(graphqlOperation(createCar, {input}))
-            console.log(data);
+            await API.graphql(graphqlOperation(createCar, {input}))
+            getCars();
         } catch (error) {
-            
+            console.error(error);
         }
     }
     
@@ -51,7 +51,8 @@ export const CarProvider = ({ children }) => {
                 cars: state.cars,
                 error: state.error,
                 loadingAllCars: state.loadingAllCars,
-                getCars
+                getCars,
+                postCar
             }}
         >
             {children}

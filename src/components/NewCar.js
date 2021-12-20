@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { createCar } from "../graphql/mutations";
+// import {createCar} from "../graphql/mutations"
 import { CarContext } from "../context/CarState";
 
-export default function NewCar() {
+export default function NewCar({show, onClick}) {
   const [allValues, setAllValues] = useState();
-  const { createCar } = useContext(CarContext);
+  const { postCar } = useContext(CarContext);
 
   const changeHandler = (e) => {
     setAllValues({ ...allValues, [e.target.name]: e.target.value });
@@ -20,18 +20,22 @@ export default function NewCar() {
       user: "me",
     };
 
-    await API.graphql(graphqlOperation(createCar, { input }));
+    onClick();
+
+    postCar({...allValues, user: "me"});
+
+    // await API.graphql(graphqlOperation(createCar, {  }));
   };
 
   return (
-    <Modal shows={true}>
+    <Modal show={show} onHide={onClick}>
       <Modal.Header>
         <h1>New Car</h1>
       </Modal.Header>
       <Modal.Body>
         <Row>
           <Col className="d-flex justify-content-center">
-            <Form onSubmit={submitHandler}>
+            <Form >
               <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -82,7 +86,7 @@ export default function NewCar() {
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="button" onClick={submitHandler}>
           Submit
         </Button>
       </Modal.Footer>

@@ -40,7 +40,7 @@ function App() {
           {/* <Route path="/new-car" exact component={NewCar} /> */}
           <Route path="/user-auth" exact component={UserAuthComp} />
           <Route path="/car/:carId" exact component={Car} />
-          <Route path="/car" exact component={CarPage} />
+          <Route path="/cars" exact component={CarPage} />
           {/* <Route path="/boards" exact component={Boards} /> */}
           {/* <Route path="/boarddetail/:boardId" component={BoardDetail} /> */}
         </Switch>
