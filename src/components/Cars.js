@@ -38,16 +38,16 @@ export default function Cars() {
   const onClickHandler = async (e) => {
     e.preventDefault();
     console.log(cars[0]);
-  }
+  };
 
   return (
     <Container fluid>
       <Row>
-        <Col className="d-flex justify-content-center">
-          {cars.map((car) => (
+        {cars.map((car) => (
+          <Col xs={4}>
             <ItemCard itemData={car} key={car.id} />
-          ))}
-        </Col>
+          </Col>
+        ))}
       </Row>
       {/* <Row>
         <Col>

@@ -15,14 +15,12 @@ export default function NewCar({show, onClick}) {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const input = {
-      ...allValues,
-      user: "me",
-    };
-
     onClick();
 
-    postCar({...allValues, user: "me"});
+    let user = await Auth.currentUserInfo();
+    console.log(user);
+
+    postCar({...allValues, user: user.attributes.email});
 
     // await API.graphql(graphqlOperation(createCar, {  }));
   };
