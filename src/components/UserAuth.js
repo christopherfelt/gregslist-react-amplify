@@ -49,7 +49,7 @@ export default function UserAuth() {
 
   async function confirmSignUp() {
     try {
-      let username = allValues.username;
+      let username = allValues.email.split("@")[0];
       let confirmation = allValues.confirmation;
       await Auth.confirmSignUp(username, confirmation);
     } catch (error) {
@@ -79,7 +79,7 @@ export default function UserAuth() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (radioValue === 1) {
+    if (radioValue === "1") {
       console.log("sign up");
       signUp();
     } else {
@@ -118,7 +118,7 @@ export default function UserAuth() {
                     name="radio"
                     value={radio.value}
                     checked={radioValue === radio.value}
-                    onChange={(e) => setRadioValue(e.currentTarget.value)}
+                    onChange={(e) => {setRadioValue(e.currentTarget.value)}}
                   >
                     {radio.name}
                   </ToggleButton>

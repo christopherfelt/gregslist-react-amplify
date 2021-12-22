@@ -1,9 +1,10 @@
-import { Auth } from "aws-amplify";
+import { Auth, API, graphqlOperation } from "aws-amplify";
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // import {listCars} from "../graphql/queries"
+import {onCreateCar} from "../graphql/subscriptions";
 import { CarContext } from "../context/CarState";
 
 import ItemCard from "./ItemCard";
@@ -22,8 +23,27 @@ export default function Cars() {
       .catch((err) => console.log(err));
 
     getCars();
-    console.log("Cars", cars);
+    // console.log("Cars", cars);
+
+    const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
+      next: ({provider, value}) => console.log({ provider, value}),
+      error: error => console.error(error)
+    })
+
+    return () => subscriptions.unsubscribe();
+
+
   }, []);
+
+  
+  // useEffect(() => {
+  
+
+
+  //   return () => {
+      
+  //   }
+  // }, [])
 
   // const fetchCars = async() => {
   //   try {
@@ -44,7 +64,7 @@ export default function Cars() {
     <Container fluid>
       <Row>
         {cars.map((car) => (
-          <Col xs={4}>
+          <Col xs={2} className="d-flex justify-content-center">
             <ItemCard itemData={car} key={car.id} />
           </Col>
         ))}
