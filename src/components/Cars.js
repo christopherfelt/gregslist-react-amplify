@@ -26,7 +26,11 @@ export default function Cars() {
     // console.log("Cars", cars);
 
     const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
-      next: ({provider, value}) => console.log({ provider, value}),
+      next: ({provider, value}) => {
+        // console.log({ provider, value})
+        console.log("Calling getCars()");
+        getCars(); //This is obviously not a good idea because as soon as this hits, there will be requests on the server that match the number of open clients
+      },
       error: error => console.error(error)
     })
 
