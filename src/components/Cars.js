@@ -22,6 +22,7 @@ export default function Cars() {
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
+    console.log(user)
     getCars();
     // console.log("Cars", cars);
 
@@ -67,9 +68,9 @@ export default function Cars() {
   return (
     <Container fluid>
       <Row>
-        {cars.map((car) => (
-          <Col xs={2} className="d-flex justify-content-center">
-            <ItemCard itemData={car} key={car.id} />
+        {cars.map((car, i) => (
+          <Col xs={2} className="d-flex justify-content-center flex-wrap">
+            <ItemCard itemData={car} key={i} />
           </Col>
         ))}
       </Row>
