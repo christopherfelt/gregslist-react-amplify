@@ -19,3 +19,10 @@
   background-color: #282c34;
   min-height: 100vh;
 }
+
+/* Bootstrap Overrides */
+
+.dropdown-toggle:after{
+  /* color: white; */
+  display: none;
+}

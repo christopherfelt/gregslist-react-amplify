@@ -40,26 +40,6 @@ export default function Cars() {
 
   }, []);
 
-  
-  // useEffect(() => {
-  
-
-
-  //   return () => {
-      
-  //   }
-  // }, [])
-
-  // const fetchCars = async() => {
-  //   try {
-  //     const data = await API.graphql(graphqlOperation(listCars))
-  //     const items = data.data.listCars.items
-  //     setCarData(items);
-  //   } catch (error) {
-  //     console.log('error fetching cars')
-  //   }
-  // }
-
   const onClickHandler = async (e) => {
     e.preventDefault();
     console.log(cars[0]);

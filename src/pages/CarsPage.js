@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import NewCar from "../NewCar";
-import Cars from "../Cars";
+import NewCar from "../components/NewCar";
+import Cars from "../components/Cars";
 
 export default function CarPage() {
   const [ show, setShow ] = useState(false);
