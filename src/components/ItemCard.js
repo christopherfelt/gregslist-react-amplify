@@ -3,8 +3,11 @@ import { Card, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 
 export default function ItemCard({itemData}) {
+
+
+
   return (
-    <Card style={{ width: "18rem" }} className="m-3">
+    <Card style={{ width: "18rem" }} className="m-3" >
       {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
       <Card.Body>
         <Card.Title>{itemData.title}</Card.Title>
@@ -24,4 +27,7 @@ export default function ItemCard({itemData}) {
       </Card.Body>
     </Card>
   );
+
+    
+
 }

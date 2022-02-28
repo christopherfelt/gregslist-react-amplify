@@ -15,9 +15,12 @@ export default function CarPage() {
       <Container>
         <Row>
           <Col className="d-flex justify-content-center">
-            <Button onClick={changeHandler}>
-              Add Car
-            </Button>
+            <div className="w-100 m-2 p-2 text-center border">
+              <Button onClick={changeHandler}>
+                Add Car
+              </Button>
+            </div>
+            
           </Col>
         </Row>
       </Container>

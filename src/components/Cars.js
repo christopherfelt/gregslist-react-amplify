@@ -49,7 +49,7 @@ export default function Cars() {
     <Container fluid>
       <Row>
         {cars.map((car, i) => (
-          <Col xs={2} className="d-flex justify-content-center flex-wrap">
+          <Col xs={6} lg={2} className="d-flex justify-content-center flex-wrap">
             <ItemCard itemData={car} key={i} />
           </Col>
         ))}

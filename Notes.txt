@@ -1,0 +1,2 @@
+One potential advantage that Vue has over react is the style section nicely built into the single page component
+trying to target a css class without importing a css file is pretty much impossible
