@@ -30,7 +30,7 @@ export default function Index() {
         <Switch>
             {
                 routes.map((r, i) => (
-                    <Route path={r.path} exact component={r.component} />
+                    <Route path={r.path} exact component={r.component} key={i} />
                 ))
             }
         </Switch>

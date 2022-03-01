@@ -4,15 +4,16 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // import {listCars} from "../graphql/queries"
-import {onCreateCar} from "../graphql/subscriptions";
+import { onCreateCar } from "../graphql/subscriptions";
 import { CarContext } from "../context/CarState";
 
 import ItemCard from "./ItemCard";
+import Loading from "./Loading";
 
 export default function Cars() {
   // const [carData, setCarData] = useState([]);
 
-  const { cars, getCars } = useContext(CarContext);
+  const { cars, loadingAllCars, getCars } = useContext(CarContext);
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -22,22 +23,20 @@ export default function Cars() {
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
-    console.log(user)
+    console.log(user);
     getCars();
     // console.log("Cars", cars);
 
     const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
-      next: ({provider, value}) => {
+      next: ({ provider, value }) => {
         // console.log({ provider, value})
         console.log("Calling getCars()");
         getCars(); //This is obviously not a good idea because as soon as this hits, there will be requests on the server that match the number of open clients
       },
-      error: error => console.error(error)
-    })
+      error: (error) => console.error(error),
+    });
 
     return () => subscriptions.unsubscribe();
-
-
   }, []);
 
   const onClickHandler = async (e) => {
@@ -46,19 +45,25 @@ export default function Cars() {
   };
 
   return (
-    <Container fluid>
-      <Row>
-        {cars.map((car, i) => (
-          <Col xs={6} lg={2} className="d-flex justify-content-center flex-wrap">
-            <ItemCard itemData={car} key={i} />
-          </Col>
-        ))}
-      </Row>
-      {/* <Row>
-        <Col>
-        <Button variant="primary" onClick={onClickHandler}>Get Cars</Button>
-        </Col>
-      </Row> */}
-    </Container>
+    <>
+      {!loadingAllCars ? (
+        <Loading />
+      ) : (
+        <Container fluid>
+          <Row>
+            {cars.map((car, i) => (
+              <Col
+                xs={6}
+                lg={2}
+                className="d-flex justify-content-center flex-wrap"
+                key={i}
+              >
+                <ItemCard itemData={car}  />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      )}
+    </>
   );
 }

@@ -3,7 +3,7 @@
 }
 
 .brand {
-  display: block;
+  /* display: block; */
   font-size: 2em !important;
   font-family: 'Segoe UI', !important;
   -webkit-font-smoothing: antialiased !important;
@@ -20,9 +20,22 @@
   min-height: 100vh;
 }
 
+.vw100 {
+  width: 100vw
+}
+
+.vh75 {
+  height: 75vh
+}
+
+.vh50 {
+  height: 50vh
+}
+
 /* Bootstrap Overrides */
 
 .dropdown-toggle:after{
   /* color: white; */
   display: none;
 }
+
