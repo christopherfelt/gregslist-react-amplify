@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 // import {listCars} from "../graphql/queries"
 import { onCreateCar } from "../graphql/subscriptions";
-import { CarContext } from "../context/CarState";
+// import { CarContext } from "../context/CarState";
+import { GlobalContext } from "../context/GlobalState";
 
 import ItemCard from "./ItemCard";
 import Loading from "./Loading";
@@ -13,7 +14,7 @@ import Loading from "./Loading";
 export default function Cars() {
   // const [carData, setCarData] = useState([]);
 
-  const { cars, loadingAllCars, getCars } = useContext(CarContext);
+  const { cars, loadingAllCars, getCars } = useContext(GlobalContext);
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function Cars() {
       next: ({ provider, value }) => {
         // console.log({ provider, value})
         console.log("Calling getCars()");
-        getCars(); //This is obviously not a good idea because as soon as this hits, there will be requests on the server that match the number of open clients
+        // getCars(); //This is obviously not a good idea because as soon as this hits, there will be requests on the server that match the number of open clients
       },
       error: (error) => console.error(error),
     });

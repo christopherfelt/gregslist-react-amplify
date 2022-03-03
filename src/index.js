@@ -9,14 +9,18 @@ import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
 import { CarProvider } from "./context/CarState";
 
+import { GlobalProvider } from "./context/GlobalState"
+
 Amplify.configure(aws_exports);
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <CarProvider>
+      {/* <CarProvider> */}
+      <GlobalProvider>
         <App />
-      </CarProvider>
+      </GlobalProvider>
+      {/* </CarProvider> */}
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

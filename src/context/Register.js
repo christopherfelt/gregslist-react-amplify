@@ -1,4 +1,4 @@
-import CarStore from "./CarState";
+import CarStore from "./CarStore";
 
 const Stores = {
     CarStore: CarStore
