@@ -94,6 +94,10 @@ export const CarProvider = ({ children }) => {
     }
   }
 
+  let actions = {}
+  actions["getCarString"] = new Function('getCars()').bind();
+  console.log(actions);
+
   return (
     <CarContext.Provider
       value={{
@@ -102,7 +106,8 @@ export const CarProvider = ({ children }) => {
         getCarsError: state.getCarsError,
         postCarError: state.postCarError,
         loadingAllCars: state.loadingAllCars,
-        getCars,
+        // getCars,
+        getCars: actions.getCarString,
         postCar,
       }}
     >

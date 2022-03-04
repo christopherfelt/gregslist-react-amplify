@@ -14,7 +14,8 @@ import Loading from "./Loading";
 export default function Cars() {
   // const [carData, setCarData] = useState([]);
 
-  const { cars, loadingAllCars, getCars } = useContext(GlobalContext);
+  // const { cars, getCars } = useContext(CarContext);
+  const { cars, methods } = useContext(GlobalContext);
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -24,8 +25,8 @@ export default function Cars() {
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
-    console.log(user);
-    getCars();
+    // console.log(user);
+    // getCars();
     // console.log("Cars", cars);
 
     const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
@@ -42,15 +43,19 @@ export default function Cars() {
 
   const onClickHandler = async (e) => {
     e.preventDefault();
-    console.log(cars[0]);
+    // console.log(cars[0]);
+    // console.log(typeof getCars);
+    let doaction = methods.find((method) => method.name == "getCars");
+    doaction.func();
   };
 
   return (
     <>
-      {!loadingAllCars ? (
+      {!true ? (
         <Loading />
-      ) : (
-        <Container fluid>
+        ) : (
+          <Container fluid>
+          <Button variant="primary" onClick={onClickHandler}>Get Cars</Button>
           <Row>
             {cars.map((car, i) => (
               <Col

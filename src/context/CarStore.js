@@ -10,17 +10,19 @@ let CarStore = {
   reducers: {
     GET_CARS: (payload) => ({ loadingAllCars: false, cars: payload }),
     GET_CARS_ERROR: (payload) => ({loadingAllCars: false, cars: [], getCarsError: payload}),
-    LOADING_ALL_CARS: () => ({loadingAllCars: true})
+    LOADING_ALL_CARS: () => ({loadingAllCars: true}),
+
   },
-  actions: {
-    getCars: {
+  actions: [
+    { 
+      name: "getCars",
       loading: "LOADING_ALL_CARS",
       success: "GET_CARS",
       error: "GET_CARS_ERROR",
       action: listCars,
     },
-  },
+  ],
 };
 
 export default CarStore;
-// return reducers[action.type]
+

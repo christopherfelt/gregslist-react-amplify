@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import React, { createContext, useReducer } from "react";
-// import { listCars } from "../graphql/queries";
+import { listCars } from "../graphql/queries";
 
 import Stores from "./Register"
 
@@ -24,31 +24,14 @@ for(const element in Stores){
 
 const GlobalReducer = (state, action = []) =>{
     if(ConsolidatedReducers[action.type]){
-        return {...state, ...(GlobalReducer[action.type](action.payload))}
+        return {...state, ...(ConsolidatedReducers[action.type](action.payload))}
     }
     return state;
 }
 
 
 export const GlobalProvider = ({ children }) => {
-    const [state, dispatch]8 = useReducer(GlobalReducer, GlobalState);
-
-    function getFunction(loading, success, error, action){
-        return new AsyncFunction(){
-            dispatch({type: loading })
-            try {
-                const data = await API.graphql(graphqlOperation(action));
-                const firstKey = Object.keys(data.data)[0];
-                const items = data.data[firstKey].items;
-                dispatch({type: success, payload: items}) 
-            } catch (msg) {
-                dispatch({
-                    type: error,
-                    payload: msg
-                })
-            }
-        };
-    }
+    const [state, dispatch] = useReducer(GlobalReducer, GlobalState);
 
     let value = {};
 
@@ -56,32 +39,47 @@ export const GlobalProvider = ({ children }) => {
 
     value = {...state};
 
-    let consolidatedActions = {};
+    let consolidatedActions = [];
 
     for(const element in Stores){
         console.log("element", Stores[element].actions);
-        consolidatedActions = {...consolidatedActions, ...Stores[element].actions}
+        consolidatedActions = [...consolidatedActions, ...Stores[element].actions]
     }
 
-    let actions = {}
 
-    console.log("Consildated actions", consolidatedActions)
+    /**
+     * Populating the values object using the map array method every other way
+     * I kept coming against the following error
+     * TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode
+     * I attempted to many paths including using the new AsyncFunction however
+     * using this constructor does not allow access to other variable and methods
+     * with in the function. Classes might have worked but I did not attempt it
+     */
 
-    Object.keys(consolidatedActions).forEach(element => {
-        let loading = consolidatedActions[element].loading;
-        let success = consolidatedActions[element].success;
-        let error = consolidatedActions[element].error;
-        let action = consolidatedActions[element].action;
-        // actions[element] = getFunction(consolidatedActions[element]);
-        actions[element] = getFunction(loading, success, error, action);
-    })
+    value = {
+      ...value,
+      methods: [
+        ...consolidatedActions.map((element) => {
+          element.func = async () => {
+            dispatch({ type: element.loading });
+            try {
+              const data = await API.graphql(graphqlOperation(element.action));
+              const firstKey = Object.keys(data.data)[0];
+              const items = data.data[firstKey].items;
+              dispatch({ type: element.success, payload: items });
+            } catch (msg) {
+              dispatch({
+                type: element.error,
+                payload: msg,
+              });
+            }
+          };
+          return element;
+        }
+        ),
+      ],
+    };
 
-    console.log("value before", value)
-    console.log("actions", actions);
-
-    for( const element in actions){
-        value = {...value, ...actions[element]} 
-    }
 
     console.log("value after", value)
 
