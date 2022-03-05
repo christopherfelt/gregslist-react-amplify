@@ -45,8 +45,9 @@ export default function Cars() {
     e.preventDefault();
     // console.log(cars[0]);
     // console.log(typeof getCars);
-    let doaction = methods.find((method) => method.name == "getCars");
-    doaction.func();
+    // let doaction = methods.find((method) => method.name == "getCars");
+    // doaction.func();
+    methods.performAction("getCars").func();
   };
 
   return (

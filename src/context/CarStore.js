@@ -11,7 +11,6 @@ let CarStore = {
     GET_CARS: (payload) => ({ loadingAllCars: false, cars: payload }),
     GET_CARS_ERROR: (payload) => ({loadingAllCars: false, cars: [], getCarsError: payload}),
     LOADING_ALL_CARS: () => ({loadingAllCars: true}),
-
   },
   actions: [
     { 

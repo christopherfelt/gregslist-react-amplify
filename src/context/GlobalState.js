@@ -1,3 +1,4 @@
+import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
 import { API, graphqlOperation } from "aws-amplify";
 import React, { createContext, useReducer } from "react";
 import { listCars } from "../graphql/queries";
@@ -15,6 +16,8 @@ for(const element in Stores){
 console.log("GlobalState", GlobalState)
 
 export const GlobalContext = createContext(GlobalState);
+
+// export const PerformAction = (methodName) => methods.find
 
 let ConsolidatedReducers = {};
 
@@ -75,10 +78,13 @@ export const GlobalProvider = ({ children }) => {
             }
           };
           return element;
-        }
+        },
         ),
       ],
+      performAction: (methodName) => this.methods.find(method => method.name === methodName)
     };
+
+    // value.performAction = (methodName) => {value.methods.find(method => method.name === methodName)}
 
 
     console.log("value after", value)
