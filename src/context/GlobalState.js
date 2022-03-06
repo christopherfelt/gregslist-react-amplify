@@ -27,11 +27,15 @@ for(const element in Stores){
 
 const GlobalReducer = (state, action = []) =>{
     if(ConsolidatedReducers[action.type]){
-        return {...state, ...(ConsolidatedReducers[action.type](action.payload))}
+        return {...state, ...(ConsolidatedReducers[action.type](action.payload, state))}
     }
     return state;
 }
 
+export const PerformAction = (methods, methodName) => {
+  const foundAction = methods.find(method => method.name);
+  foundAction.func();
+}
 
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(GlobalReducer, GlobalState);
@@ -81,7 +85,7 @@ export const GlobalProvider = ({ children }) => {
         },
         ),
       ],
-      performAction: (methodName) => this.methods.find(method => method.name === methodName)
+      // performAction: (methodName) => this.methods.find(method => method.name === methodName)
     };
 
     // value.performAction = (methodName) => {value.methods.find(method => method.name === methodName)}

@@ -1,18 +1,23 @@
 import { listCars } from "../graphql/queries";
+import { createCar } from "../graphql/mutations"
 
 let CarStore = {
   state: {
     car: {},
     cars: [],
     getCarsError: null,
-    loadingAllCars: true
+    loadingAllCars: true,
+    loadingCar: false,
   },
   reducers: {
+    LOADING_ALL_CARS: () => ({loadingAllCars: true}),
     GET_CARS: (payload) => ({ loadingAllCars: false, cars: payload }),
     GET_CARS_ERROR: (payload) => ({loadingAllCars: false, cars: [], getCarsError: payload}),
-    LOADING_ALL_CARS: () => ({loadingAllCars: true}),
+    LOADING_CAR: () => ({loadingCar: true}),
+    CAR_SUBMITTED: (payload, state) => ({loadingCar: false, cars: [...state.cars, payload]})
   },
   actions: [
+    // put reducer in the actions
     { 
       name: "getCars",
       loading: "LOADING_ALL_CARS",
@@ -20,6 +25,13 @@ let CarStore = {
       error: "GET_CARS_ERROR",
       action: listCars,
     },
+    {
+      name: "postCars",
+      loading: "LOADING_CAR",
+      success: "CAR_SUBMITTED",
+      error: "POST_CAR_ERROR",
+      action: createCar
+    }
   ],
 };
 

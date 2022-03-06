@@ -3,20 +3,16 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// import {listCars} from "../graphql/queries"
 import { onCreateCar } from "../graphql/subscriptions";
-// import { CarContext } from "../context/CarState";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext, PerformAction } from "../context/GlobalState";
 
 import ItemCard from "./ItemCard";
 import Loading from "./Loading";
 
 export default function Cars() {
-  // const [carData, setCarData] = useState([]);
-
-  // const { cars, getCars } = useContext(CarContext);
-  const { cars, methods } = useContext(GlobalContext);
+  const carState = useContext(GlobalContext);
   const [user, setUser] = useState();
+  // const getCars = useAction("getCars");
 
   useEffect(() => {
     Auth.currentAuthenticatedUser({
@@ -25,10 +21,7 @@ export default function Cars() {
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
-    // console.log(user);
-    // getCars();
-    // console.log("Cars", cars);
-
+    PerformAction(carState.methods, "getCars");
     const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
       next: ({ provider, value }) => {
         // console.log({ provider, value})
@@ -43,29 +36,25 @@ export default function Cars() {
 
   const onClickHandler = async (e) => {
     e.preventDefault();
-    // console.log(cars[0]);
-    // console.log(typeof getCars);
-    // let doaction = methods.find((method) => method.name == "getCars");
-    // doaction.func();
-    methods.performAction("getCars").func();
+    // PerformAction(carState.methods, "getCars");
   };
 
   return (
     <>
-      {!true ? (
+      {carState.loadingAllCars ? (
         <Loading />
-        ) : (
-          <Container fluid>
-          <Button variant="primary" onClick={onClickHandler}>Get Cars</Button>
+      ) : (
+        <Container fluid>
+          {/* <Button variant="primary" onClick={onClickHandler}>Get Cars</Button> */}
           <Row>
-            {cars.map((car, i) => (
+            {carState.cars.map((car, i) => (
               <Col
                 xs={6}
                 lg={2}
                 className="d-flex justify-content-center flex-wrap"
                 key={i}
               >
-                <ItemCard itemData={car}  />
+                <ItemCard itemData={car} />
               </Col>
             ))}
           </Row>
