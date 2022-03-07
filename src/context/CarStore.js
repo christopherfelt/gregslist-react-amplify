@@ -27,7 +27,7 @@ let CarStore = {
     },
     {
       name: "postCars",
-      loading: "LOADING_CAR",
+      loading: () => ({loadingCar: true}),
       success: "CAR_SUBMITTED",
       error: "POST_CAR_ERROR",
       action: createCar
