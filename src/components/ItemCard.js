@@ -1,9 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import { Card, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 
 export default function ItemCard({itemData}) {
 
+  const [shadow, setShadow] = useState(false);
+
+  // function mouseOver (event) {
+  //   event.preventDefault()
+  //   event.stopPropagation()
+  //   event.target.style = "box-shadow: 5px 10px";
+  // }
+
+  // function mouseOut(event){
+    
+  // }
 
 
   return (

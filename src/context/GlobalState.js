@@ -1,4 +1,3 @@
-import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
 import { API, graphqlOperation } from "aws-amplify";
 import React, { createContext, useReducer } from "react";
 import { listCars } from "../graphql/queries";
@@ -21,9 +20,30 @@ export const GlobalContext = createContext(GlobalState);
 
 let ConsolidatedReducers = {};
 
-for(const element in Stores){
-    ConsolidatedReducers = {...ConsolidatedReducers, ...Stores[element].reducers}
+let actionReducers = {};
+for (const element in Stores) {
+
+  let currentStoreActions = Stores[element].actions;
+  if (currentStoreActions) {
+    for (const [i, e] of currentStoreActions.entries()) {
+      let keys = Object.keys(e);
+      for (const k of keys) {
+        if (k !== "action" && k !== "name") {
+          if (typeof e[k] == "function") {
+            actionReducers[e.name + k] = e[k];
+            currentStoreActions[i][k] = e.name + k;
+          }
+        }
+      }
+    }
+  }
 }
+
+for(const element in Stores){
+  ConsolidatedReducers = {...ConsolidatedReducers, ...Stores[element].reducers}
+}
+
+ConsolidatedReducers = {...ConsolidatedReducers, ...actionReducers}
 
 const GlobalReducer = (state, action = []) =>{
     if(ConsolidatedReducers[action.type]){
@@ -33,7 +53,7 @@ const GlobalReducer = (state, action = []) =>{
 }
 
 export const PerformAction = (methods, methodName) => {
-  const foundAction = methods.find(method => method.name);
+  const foundAction = methods.find(method => method.name === methodName);
   foundAction.func();
 }
 

@@ -10,20 +10,27 @@ let CarStore = {
     loadingCar: false,
   },
   reducers: {
-    LOADING_ALL_CARS: () => ({loadingAllCars: true}),
-    GET_CARS: (payload) => ({ loadingAllCars: false, cars: payload }),
-    GET_CARS_ERROR: (payload) => ({loadingAllCars: false, cars: [], getCarsError: payload}),
-    LOADING_CAR: () => ({loadingCar: true}),
-    CAR_SUBMITTED: (payload, state) => ({loadingCar: false, cars: [...state.cars, payload]})
+    // LOADING_ALL_CARS: () => ({loadingAllCars: true}),
+    // GET_CARS: (payload) => ({ loadingAllCars: false, cars: payload }),
+    // GET_CARS_ERROR: (payload) => ({loadingAllCars: false, cars: [], getCarsError: payload}),
+    // LOADING_CAR: () => ({loadingCar: true}),
+    // CAR_SUBMITTED: (payload, state) => ({loadingCar: false, cars: [...state.cars, payload]})
   },
   actions: [
     // put reducer in the actions
-    { 
+    // { 
+    //   name: "getCars",
+    //   loading: "LOADING_ALL_CARS",
+    //   success: "GET_CARS",
+    //   error: "GET_CARS_ERROR",
+    //   action: listCars,
+    // },
+    {
       name: "getCars",
-      loading: "LOADING_ALL_CARS",
-      success: "GET_CARS",
-      error: "GET_CARS_ERROR",
-      action: listCars,
+      loading: () => ({loadingAllCars: true}),
+      success: (payload) => ({loadingAllCars: false, cars: payload}),
+      error: (payload) => ({loadingAllCars: false, cars:[], getCarsError: payload}),
+      action: listCars
     },
     {
       name: "postCars",
