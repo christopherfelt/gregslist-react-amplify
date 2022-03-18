@@ -61,6 +61,7 @@ export default function NavBar() {
       <Navbar.Collapse className="d-flex justify-content-end">
         <Nav className="">
           <NavDropdown title={userButton} id="" align={"end"}>
+            <NavDropdown.Item as={Link} to={"/user-auth"} >Sign In</NavDropdown.Item>
             <NavDropdown.Item as={Link} to={"/signout"}>
               Sign Out
             </NavDropdown.Item>

@@ -52,9 +52,9 @@ const GlobalReducer = (state, action = []) =>{
     return state;
 }
 
-export const PerformAction = (methods, methodName) => {
+export const PerformAction = (methods, methodName, input={}) => {
   const foundAction = methods.find(method => method.name === methodName);
-  foundAction.func();
+  foundAction.func(input);
 }
 
 export const GlobalProvider = ({ children }) => {
@@ -87,13 +87,16 @@ export const GlobalProvider = ({ children }) => {
       ...value,
       methods: [
         ...consolidatedActions.map((element) => {
-          element.func = async () => {
+          element.func = async (input = {}) => {
             dispatch({ type: element.loading });
             try {
-              const data = await API.graphql(graphqlOperation(element.action));
-              const firstKey = Object.keys(data.data)[0];
-              const items = data.data[firstKey].items;
-              dispatch({ type: element.success, payload: items });
+              const response = await API.graphql(graphqlOperation(element.action, {input}));
+              console.log("input", input)
+              const firstKey = Object.keys(response.data)[0];
+              console.log("response",response);
+              const data = response.data[firstKey].items ? response.data[firstKey].items : response.data[firstKey];
+              console.log("returned data: ", data);
+              dispatch({ type: element.success, payload: data });
             } catch (msg) {
               dispatch({
                 type: element.error,

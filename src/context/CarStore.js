@@ -6,8 +6,10 @@ let CarStore = {
     car: {},
     cars: [],
     getCarsError: null,
+    postCarError: null,
     loadingAllCars: true,
     loadingCar: false,
+    deletingCar: false,
   },
   reducers: {
     // LOADING_ALL_CARS: () => ({loadingAllCars: true}),
@@ -17,14 +19,6 @@ let CarStore = {
     // CAR_SUBMITTED: (payload, state) => ({loadingCar: false, cars: [...state.cars, payload]})
   },
   actions: [
-    // put reducer in the actions
-    // { 
-    //   name: "getCars",
-    //   loading: "LOADING_ALL_CARS",
-    //   success: "GET_CARS",
-    //   error: "GET_CARS_ERROR",
-    //   action: listCars,
-    // },
     {
       name: "getCars",
       loading: () => ({loadingAllCars: true}),
@@ -33,11 +27,17 @@ let CarStore = {
       action: listCars
     },
     {
-      name: "postCars",
+      name: "postCar",
       loading: () => ({loadingCar: true}),
-      success: "CAR_SUBMITTED",
-      error: "POST_CAR_ERROR",
+      // maybe don't add the car to the state and let the subscribe get it
+      success: (payload, state) => ({loadingCar:false, cars:[...state.cars, payload]}),
+      error: (payload) => ({loadingCar: false, postCarError: payload}),
       action: createCar
+    },
+    {
+      name:"deleteCar",
+      loading: () => ({deletingCar: true})
+
     }
   ],
 };

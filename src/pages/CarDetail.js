@@ -10,25 +10,24 @@ import {
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 
-import { CarContext } from "../context/CarState";
+// import { CarContext } from "../context/CarState";
+import { GlobalContext, PerformAction } from "../context/GlobalState";
 
 export default function Car({
   match: {
     params: { carId },
   },
 }) {
-  const { cars, getCars } = useContext(CarContext);
+  const carStore = useContext(GlobalContext);
 
-  const [car, setCar] = useState({ title: "", description: "", make:"",
-                                  model:"", price:"" });
+  const [car, setCar] = useState();
   const [user, setUser] = useState();
 
   useEffect(() => {
-    console.log("Cars from detail", cars[0]);
-    if (!cars[0]) {
-      getCars();
+    if (carStore.cars.length == 0) {
+      PerformAction(carStore.methods, "getCars")
     } else {
-      setCar((car) => cars.find((car) => car.id === carId));
+      setCar(() => carStore.cars.find((car) => car.id === carId));
     }
     Auth.currentAuthenticatedUser()
       .then((user) => setUser(user))
@@ -36,17 +35,23 @@ export default function Car({
 
     console.log(
       "Car",
-      cars.find((car) => car.id === carId)
+      carStore.cars.find((car) => car.id === carId)
     );
-  }, [cars]);
+  }, [carStore.cars]);
 
   const onClickHandler = async (e) => {
     e.preventDefault();
-    console.log(cars);
+    console.log(carStore.cars);
   };
 
+  const deleteHandler = async(e) =>{
+    e.preventDefault();
+    let user = await Auth.currentUserInfo();
+    console.log(user);
+  }
+
   return (
-    <Container>
+    <Container className="mt-3">
       <Row>
         <Col>
           <Card>
@@ -58,9 +63,13 @@ export default function Car({
                 <ListGroupItem>{car.model}</ListGroupItem>
                 <ListGroupItem>{car.price}</ListGroupItem>
               </ListGroup>
-              <Button variant="primary" className="mt-2" onClick={onClickHandler}>
-                Bid
-              </Button>
+              <div>
+
+               <Button variant="primary" className="mt-2" onClick={onClickHandler}>
+                 Bid
+                </Button>
+               <Button variant="danger" className="ms-2 mt-2" onClick={deleteHandler}>Delete</Button>
+              </div>
             </Card.Body>
           </Card>
         </Col>
