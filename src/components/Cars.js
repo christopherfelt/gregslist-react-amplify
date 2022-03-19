@@ -4,13 +4,13 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { onCreateCar } from "../graphql/subscriptions";
-import { GlobalContext, PerformAction } from "../context/GlobalState";
+import { GlobalContext } from "../context/GlobalState";
 
 import ItemCard from "./ItemCard";
 import Loading from "./Loading";
 
 export default function Cars() {
-  const carState = useContext(GlobalContext);
+  const g = useContext(GlobalContext);
   const [user, setUser] = useState();
   // const getCars = useAction("getCars");
 
@@ -21,7 +21,7 @@ export default function Cars() {
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
-    PerformAction(carState.methods, "getCars");
+    g.run("getCars");
     const subscriptions = API.graphql(graphqlOperation(onCreateCar)).subscribe({
       next: ({ provider, value }) => {
         // console.log({ provider, value})
@@ -37,17 +37,18 @@ export default function Cars() {
   const onClickHandler = async (e) => {
     e.preventDefault();
     // PerformAction(carState.methods, "getCars");
+    // carState.run("getCars");
   };
 
   return (
     <>
-      {carState.loadingAllCars ? (
+      {g.loadingAllCars ? (
         <Loading />
       ) : (
         <Container fluid>
           {/* <Button variant="primary" onClick={onClickHandler}>Get Cars</Button> */}
           <Row>
-            {carState.cars.map((car, i) => (
+            {g.cars.map((car, i) => (
               <Col
                 xs={6}
                 lg={2}

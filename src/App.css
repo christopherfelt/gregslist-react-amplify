@@ -39,7 +39,11 @@
   display: none;
 }
 
-/* .hover-shadow:hover{
-  box-shadow: ;
-} */
+.hover-shadow{
+  transition-duration: .5s;
+}
+
+.hover-shadow:hover{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
 

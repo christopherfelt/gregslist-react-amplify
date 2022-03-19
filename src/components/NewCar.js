@@ -3,11 +3,11 @@ import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 // import {createCar} from "../graphql/mutations"
 // import { CarContext } from "../context/CarState";
-import { GlobalContext, PerformAction } from "../context/GlobalState";
+import { GlobalContext } from "../context/GlobalState";
 
 export default function NewCar({show, onClick}) {
   const [allValues, setAllValues] = useState();
-  const carState = useContext(GlobalContext);
+  const g = useContext(GlobalContext);
 
   const changeHandler = (e) => {
     setAllValues({ ...allValues, [e.target.name]: e.target.value });
@@ -17,11 +17,8 @@ export default function NewCar({show, onClick}) {
     e.preventDefault();
     let user = await Auth.currentUserInfo();
     console.log(user);
-    var newCarInput = {...allValues, user: user.attributes.email};
-    PerformAction(carState.methods, "postCar", newCarInput);
-    // postCar({...allValues, user: user.attributes.email});
-
-    // await API.graphql(graphqlOperation(createCar, {  }));
+    let newCarInput = {...allValues, user: user.attributes.email};
+    g.run("postCar", newCarInput);
   };
 
   return (

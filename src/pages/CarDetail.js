@@ -9,69 +9,136 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
-
-// import { CarContext } from "../context/CarState";
-import { GlobalContext, PerformAction } from "../context/GlobalState";
+import { GlobalContext } from "../context/GlobalState";
+import Loading from "../components/Loading";
+import EditableText from "../components/utilities/EditableText";
+import ConditionalButton from "../components/utilities/ConditionalButton";
 
 export default function Car({
   match: {
     params: { carId },
   },
 }) {
-  const carStore = useContext(GlobalContext);
+
+  const g = useContext(GlobalContext);
 
   const [car, setCar] = useState();
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
+  const [editedValues, setEditedValues] = useState();
+  const [fieldChange, setFieldChange] = useState(false);
 
   useEffect(() => {
-    if (carStore.cars.length == 0) {
-      PerformAction(carStore.methods, "getCars")
+    if (g.cars.length === 0) {
+      setLoading(true);
+      g.run("getCars");
     } else {
-      setCar(() => carStore.cars.find((car) => car.id === carId));
+      var carData = g.cars.find((car) => car.id === carId);
+      setCar(carData)
+      setEditedValues(carData)
+      setLoading(false);
     }
     Auth.currentAuthenticatedUser()
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
 
-    console.log(
-      "Car",
-      carStore.cars.find((car) => car.id === carId)
-    );
-  }, [carStore.cars]);
+  }, [g.cars]);
 
-  const onClickHandler = async (e) => {
+
+  const onChangeHandler = (e) => {
+    setFieldChange(true);
+    setEditedValues({...editedValues, [e.target.name]: e.target.value});
+  }
+  
+  const onSaveHandler = (e) =>{
     e.preventDefault();
-    console.log(carStore.cars);
-  };
+    let updatedCarInput = editedValues;
+    console.log(editedValues);
+    // g.run("putCar", updatedCarInput)
+    // setEditMode(!inEditMode);
+  }
 
   const deleteHandler = async(e) =>{
     e.preventDefault();
-    let user = await Auth.currentUserInfo();
-    console.log(user);
+    g.run("deleteCar", {id: car.id});
   }
 
   return (
     <Container className="mt-3">
       <Row>
         <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>{car.title}</Card.Title>
-              <Card.Text>{car.description}</Card.Text>
-              <ListGroup>
-                <ListGroupItem>{car.make}</ListGroupItem>
-                <ListGroupItem>{car.model}</ListGroupItem>
-                <ListGroupItem>{car.price}</ListGroupItem>
-              </ListGroup>
-              <div>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Card>
+              <Card.Body>
+                <EditableText
+                  field="title"
+                  handleChange={onChangeHandler}
+                  startValue={editedValues.title}
+                  disable={false}
+                >
+                  <Card.Title>{editedValues.title}</Card.Title>
+                </EditableText>
+                <EditableText
+                  field="description"
+                  handleChange={onChangeHandler}
+                  startValue={editedValues.description}
+                  disable={false}
+                >
+                  <Card.Text>{editedValues.description}</Card.Text>
+                </EditableText>
+                <ListGroup>
+                  <EditableText
+                    field="make"
+                    handleChange={onChangeHandler}
+                    startValue={editedValues.make}
+                    disable={false}
+                  >
+                    <ListGroupItem>{editedValues.make}</ListGroupItem>
+                  </EditableText>
+                  <EditableText
+                    field="model"
+                    handleChange={onChangeHandler}
+                    startValue={editedValues.model}
+                    disable={false}
+                  >
+                    <ListGroupItem>{editedValues.model}</ListGroupItem>
+                  </EditableText>
+                  <EditableText
+                    field="price"
+                    handleChange={onChangeHandler}
+                    startValue={editedValues.price}
+                    disable={false}
+                  >
+                    <ListGroupItem>{editedValues.price}</ListGroupItem>
+                  </EditableText>
+                </ListGroup>
 
-               <Button variant="primary" className="mt-2" onClick={onClickHandler}>
-                 Bid
-                </Button>
-               <Button variant="danger" className="ms-2 mt-2" onClick={deleteHandler}>Delete</Button>
-              </div>
-            </Card.Body>
-          </Card>
+                <div>
+                  <ConditionalButton showIf={fieldChange}>
+                      <Button
+                      variant="primary"
+                      className="mt-2"
+                      onClick={onSaveHandler}
+                    >
+                      Save
+                    </Button>
+                  </ConditionalButton>
+
+                  <ConditionalButton showIf={fieldChange}>
+                    <Button
+                      variant="danger"
+                      className="ms-2 mt-2"
+                      onClick={deleteHandler}
+                    >
+                      Delete
+                    </Button>
+                  </ConditionalButton>
+                </div>
+              </Card.Body>
+            </Card>
+          )}
         </Col>
       </Row>
     </Container>

@@ -6,17 +6,15 @@ import Stores from "./Register"
 
 let GlobalState = {};
 
-console.log("Stores", Stores)
+// console.log("Stores", Stores)
 
 for(const element in Stores){
     GlobalState = {...GlobalState, ...Stores[element].state};
 }
 
-console.log("GlobalState", GlobalState)
+// console.log("GlobalState", GlobalState)
 
 export const GlobalContext = createContext(GlobalState);
-
-// export const PerformAction = (methodName) => methods.find
 
 let ConsolidatedReducers = {};
 
@@ -52,69 +50,80 @@ const GlobalReducer = (state, action = []) =>{
     return state;
 }
 
-export const PerformAction = (methods, methodName, input={}) => {
-  const foundAction = methods.find(method => method.name === methodName);
-  foundAction.func(input);
-}
-
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(GlobalReducer, GlobalState);
 
     let value = {};
 
-    console.log("state", state)
+    // console.log("state", state)
 
     value = {...state};
 
     let consolidatedActions = [];
 
     for(const element in Stores){
-        console.log("element", Stores[element].actions);
+        // console.log("element", Stores[element].actions);
         consolidatedActions = [...consolidatedActions, ...Stores[element].actions]
     }
 
-
-    /**
-     * Populating the values object using the map array method every other way
-     * I kept coming against the following error
-     * TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode
-     * I attempted to many paths including using the new AsyncFunction however
-     * using this constructor does not allow access to other variable and methods
-     * with in the function. Classes might have worked but I did not attempt it
-     */
+    // value = {
+    //   ...value,
+    //   methods: [
+    //     ...consolidatedActions.map((element) => {
+    //       element.func = async (input = {}) => {
+    //         dispatch({ type: element.loading });
+    //         try {
+    //           const response = await API.graphql(graphqlOperation(element.action, {input}));
+    //           console.log("input", input)
+    //           const firstKey = Object.keys(response.data)[0];
+    //           console.log("response",response);
+    //           const data = response.data[firstKey].items ? response.data[firstKey].items : response.data[firstKey];
+    //           console.log("returned data: ", data);
+    //           dispatch({ type: element.success, payload: data });
+    //         } catch (msg) {
+    //           dispatch({
+    //             type: element.error,
+    //             payload: msg,
+    //           });
+    //         }
+    //       };
+    //       return element;
+    //     },
+    //     ),
+    //   ],
+    // };
 
     value = {
       ...value,
-      methods: [
-        ...consolidatedActions.map((element) => {
-          element.func = async (input = {}) => {
+      run: (methodName, input={}) => {
+      let method = [...consolidatedActions.map((element) => {
+          element.func = async () => {
             dispatch({ type: element.loading });
             try {
               const response = await API.graphql(graphqlOperation(element.action, {input}));
-              console.log("input", input)
+              
               const firstKey = Object.keys(response.data)[0];
-              console.log("response",response);
               const data = response.data[firstKey].items ? response.data[firstKey].items : response.data[firstKey];
-              console.log("returned data: ", data);
+              console.log("data:", response)
               dispatch({ type: element.success, payload: data });
-            } catch (msg) {
+            } catch (response) {
+              console.log(response.errors[0]);
               dispatch({
                 type: element.error,
-                payload: msg,
+                payload: response.errors[0],
               });
             }
           };
           return element;
         },
         ),
-      ],
-      // performAction: (methodName) => this.methods.find(method => method.name === methodName)
+      ].find((method) => method.name === methodName);
+      method.func();
+    }
+      ,
     };
 
-    // value.performAction = (methodName) => {value.methods.find(method => method.name === methodName)}
-
-
-    console.log("value after", value)
+    // console.log("value after", value)
 
 
     return (
