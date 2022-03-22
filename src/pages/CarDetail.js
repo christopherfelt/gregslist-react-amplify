@@ -116,25 +116,23 @@ export default function Car({
                 </ListGroup>
 
                 <div>
-                  <ConditionalButton showIf={fieldChange}>
-                      <Button
+                  {fieldChange && (
+                    <Button
                       variant="primary"
                       className="mt-2"
                       onClick={onSaveHandler}
                     >
                       Save
                     </Button>
-                  </ConditionalButton>
+                  )}
 
-                  <ConditionalButton showIf={fieldChange}>
-                    <Button
-                      variant="danger"
-                      className="ms-2 mt-2"
-                      onClick={deleteHandler}
-                    >
-                      Delete
-                    </Button>
-                  </ConditionalButton>
+                  <Button
+                    variant="danger"
+                    className="ms-2 mt-2"
+                    onClick={deleteHandler}
+                  >
+                    Delete
+                  </Button>
                 </div>
               </Card.Body>
             </Card>
