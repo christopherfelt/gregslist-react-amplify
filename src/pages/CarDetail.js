@@ -12,6 +12,7 @@ import { Auth } from "aws-amplify";
 import { GlobalContext } from "../context/GlobalState";
 import Loading from "../components/Loading";
 import EditableText from "../components/utilities/EditableText";
+import EditableText2 from "../components/utilities/EditableText2"
 import ConditionalButton from "../components/utilities/ConditionalButton";
 
 export default function Car({
@@ -19,58 +20,68 @@ export default function Car({
     params: { carId },
   },
 }) {
-
   const g = useContext(GlobalContext);
 
   const [car, setCar] = useState();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [editedValues, setEditedValues] = useState();
+  const [editedValues, setEditedValues] = useState({title:""});
   const [fieldChange, setFieldChange] = useState(false);
 
   useEffect(() => {
     if (g.cars.length === 0) {
       setLoading(true);
+      setEditedValues({title: ""})
       g.run("getCars");
     } else {
       var carData = g.cars.find((car) => car.id === carId);
-      setCar(carData)
-      setEditedValues(carData)
+      setCar(carData);
+      setEditedValues(carData);
       setLoading(false);
     }
     Auth.currentAuthenticatedUser()
       .then((user) => setUser(user))
       .catch((err) => console.log(err));
-
   }, [g.cars]);
-
 
   const onChangeHandler = (e) => {
     setFieldChange(true);
-    setEditedValues({...editedValues, [e.target.name]: e.target.value});
-  }
-  
-  const onSaveHandler = (e) =>{
+    setEditedValues({ ...editedValues, [e.target.name]: e.target.value });
+  };
+
+  const onSaveHandler = (e) => {
     e.preventDefault();
     let updatedCarInput = editedValues;
     console.log(editedValues);
     // g.run("putCar", updatedCarInput)
     // setEditMode(!inEditMode);
-  }
+  };
 
-  const deleteHandler = async(e) =>{
+  const deleteHandler = async (e) => {
     e.preventDefault();
-    g.run("deleteCar", {id: car.id});
-  }
+    g.run("deleteCar", { id: car.id });
+  };
 
   return (
-    <Container className="mt-3">
-      <Row>
-        <Col>
-          {loading ? (
-            <Loading />
-          ) : (
+    <Loading isLoading={loading}>
+      <Container className="mt-3">
+        <Row>
+          <Col>
             <Card>
+              {/* <Card.Body>
+                <EditableText2>
+                  <Card.Title
+                    data-etfield="title"
+                    data-etdisable={false}
+                    data-etstartvalue={editedValues.title}
+                    data-etonchange={onChangeHandler}
+                  >
+                    {editedValues.title}{" "}
+                  </Card.Title>
+                  <Card.Text>World</Card.Text>
+                </EditableText2>
+              </Card.Body> */}
+
               <Card.Body>
                 <EditableText
                   field="title"
@@ -136,9 +147,9 @@ export default function Car({
                 </div>
               </Card.Body>
             </Card>
-          )}
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+      </Container>
+    </Loading>
   );
 }

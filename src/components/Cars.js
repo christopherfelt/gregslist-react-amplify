@@ -42,9 +42,7 @@ export default function Cars() {
 
   return (
     <>
-      {g.loadingAllCars ? (
-        <Loading />
-      ) : (
+      <Loading  isLoading={g.loadingAllCars} >
         <Container fluid>
           {/* <Button variant="primary" onClick={onClickHandler}>Get Cars</Button> */}
           <Row>
@@ -60,7 +58,7 @@ export default function Cars() {
             ))}
           </Row>
         </Container>
-      )}
+      </Loading>
     </>
   );
 }
